@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 class Machine(object):
     def __init__(self) -> None:
