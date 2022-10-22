@@ -336,5 +336,5 @@ That's all. Thank you for using our Turing Machine.
         
         M.print_tape()
 
-
-execute()
+if __name__ == '__main__':
+    execute()
