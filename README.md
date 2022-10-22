@@ -104,3 +104,8 @@ That's all. Thank you for using our Turing Machine.
 
 © Garik MKrtchyan 2022
 
+Contacts:
+    mail: garikmkrtychan277353@gmail.com
+    tg: https://t.me/V1king_V
+    
+
