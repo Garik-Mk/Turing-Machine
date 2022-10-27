@@ -99,6 +99,8 @@ should be:
                ᛏ
 ```
 
+TODO list
+ > Make program for reading files in RWMS format. [Still in progress :D]
 
 That's all. Thank you for using our Turing Machine.                
 
