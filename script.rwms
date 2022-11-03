@@ -1,0 +1,13 @@
+CREATE Machine1
+{
+    ADDSTATES
+    {
+        1:
+            11r1, 21m2;
+        2:
+            12l1;
+        3:
+            22r2;
+    }
+    ADDSTATE(11r4, 44m4);
+}

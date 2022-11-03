@@ -1,4 +1,135 @@
-#!/usr/bin/env python3
+HELP = \
+"""
+DEAR USER, WELCOME TO THE TURING MACHINE!
+=====================================================================
+
+A Turing machine is a mathematical model of computation describing an
+abstract machine that manipulates symbols on a strip of tape according
+to a table of rules. Despite the model's simplicity, it is capable of
+implementing any computer algorithm.
+
+The machine operates on an infinite memory tape divided into discrete
+cells, each of which can hold a single symbol drawn from a finite set
+of symbols called the alphabet of the machine. It has a "head" that,
+at any point in the machine's operation, is positioned over one of
+these cells, and a "state" selected from a finite set of states.
+
+At each step of its operation, the head reads the symbol in its cell.
+Then, based on the symbol and the machine's own present state, the
+machine writes a symbol into the same cell, and moves the head one
+step to the left or the right, or halts the computation. The choice
+of which replacement symbol to write and which direction to move is
+based on a finite table that specifies what to do for each combination
+of the current state and the symbol that is read. 
+
+=====================================================================
+
+When machine core file is run, the '$' symbol is waiting for you to
+write command. Commands can be written in one line, or splited each
+space to a new line.
+
+    readfile file_path - read script file and run it
+
+    help - print help menu
+
+    execute machine_name - machine_name is optional, if no name 
+                           specified, simply runs first machine
+
+=====================================================================
+Rules are very simple. Machine can execute a few simple commands:
+    l - Move head to the left.
+    r - Move head to the right.
+    n - No move.
+    w_- Write value of _ to the tape.
+    / - Write an subcommand.
+    q - Quit the machine.
+
+---------------------------------------------------------------------
+
+Subcommands are kind of useful when you are creating something besides
+machine that can move 3 cells to right and write there 'Hello World!'.
+
+Subcommands are:
+
+    states - print table of all states in machine
+        note: 0 state is exit state, don't try to overwrite it
+
+    save - save machine's tape and table of states to memory
+        note: there can be only 1 saved machine
+    
+    load - loads saved machine
+    
+    reset - reset to empty tape and empties table of states
+    
+    new - create new state, for details see above
+    
+    edit - edit states commands, index of state must be specified
+
+    run - run specified state. If no state is specified, simply
+          runs first state in table
+    
+    write - THIS IS NOT turing machine command, it is just used for
+            pre-writing on tape something, for further using
+
+=====================================================================
+
+States are saved in this format - RWMS, where each letter stands for:
+    R - if head reads value of R in current cell
+    W - then write W to current cell
+    M - move head on the tape (left, right, no-move)
+    S - change state to state with index S (For creating loops, state
+        can be changed to current)
+--------------------------------------------------------------------
+
+As an example of machine usage, let's write a simple algorithm, for
+calculating sum of 2 numbers.
+
+Λ means the cell is empty. Let's write two numbers to tape, and '+'
+sign between them: 7+4
+This means we must write '+' sign, 8 ones on one side of it, and 5
+ones on the other side. We write n+1 ones, because 1 means 0.
+
+    ΛΛΛΛΛΛΛΛΛΛΛ11111111+11111ΛΛΛΛΛΛΛΛΛΛΛ
+               ᛏ
+
+There is an agreement, to start an finish run of the machine at the
+first left non-empty cell. So, let's start creating our states.
+For cell creation we must use subcommands, so we must type '/', and
+type command to the next line.
+
+    Machine$ /
+    new 11r1 +1r1 ΛΛn2
+
+This command creates a new state under the first number, and applies
+3 conditions to it. 11r1 means, that if machine sees an 1 on the 
+tape, it must leave it unchanged, by simply rewriting it to 1, than
+move one position to the left and go to state 1, which means stay in
+a loop. We need to add a few more states in the same way, and when
+done, use this command to see states table:
+
+    Machine$ /
+    states
+
+The output should be:
+    0 p
+    1 ['11r1', '+1r1', 'ΛΛn2']
+    2 ['ΛΛl2', '1Λl3']
+    3 ['11l3', 'ΛΛr0']
+
+After creating states, you may run the machine, and the result
+should be:
+    ΛΛΛΛΛΛΛΛΛΛΛ1111111111111ΛΛΛΛΛΛΛΛΛΛΛΛ
+               ᛏ
+
+====================================================================
+That's all. Thank you for using our Turing Machine.
+                                             
+                                             © Garik MKrtchyan 2022
+
+"""
+
+
+OPENED_MACHINES = {} # {'machine name': machine_object, ...
 
 class Machine(object):
     def __init__(self) -> None:
@@ -61,7 +192,7 @@ class Machine(object):
         print()
         print(' ' * (self.position), 'ᛏ')
     
-    def correct_command(self, command) -> bool:
+    def correct_command(self, command: str) -> bool:
         """Checks if command is correct RWMS format"""
         if len(command) < 4:
             return False
@@ -116,13 +247,27 @@ class Machine(object):
         return False
 
 
+def open_script(file_path: str) -> None:
+    """Read script file and apply it's commands to machine."""
+    if not file_path.endswith('.rwms'):
+        return False
+    
+    f = open(file_path, 'r')
+    lines = f.readlines()
+    command_string = ''
+    
+    for i in range(len(lines)):
+        command_string += lines[i]
+    command_string = command_string.replace(' ', '').replace('\n', '')
+    
+    print(command_string)
 
-def execute():
+
+def execute(M: Machine = Machine()):
     
     saved_tape, saved_pos, saved_L, saved_states = [], 0, 0, []
-    M = Machine()
     M.print_tape()
-    
+
     while True:
         
         command = input('Machine$ ')
@@ -157,9 +302,9 @@ def execute():
                         inp = input()
                         try:
                             M.add_state(inp)
-                        except:
+                        except Exception:
                             print('Try again.')
-                    except:
+                    except Exception:
                         print("Something went wrong while creating state.")
                 
                 elif subcommand[0] == 'edit':
@@ -175,7 +320,7 @@ def execute():
                         M.run_state(int(subcommand[1]))
                     except IndexError:
                         M.run_state(0)
-                    except:
+                    except Exception:
                         print("Something went wrong with state index.")
                 
                 elif subcommand[0] == 'write':
@@ -186,7 +331,7 @@ def execute():
                         inp = input()
                         try:
                             M.__write_for_tests__(inp)
-                        except:
+                        except Exception:
                             print('Try again.')
                 
                 elif subcommand[0] == 'save':
@@ -204,126 +349,6 @@ def execute():
                 elif subcommand[0] == 'reset':
                     M = Machine()
                 
-                elif subcommand[0] == 'help':
-                    help_string = \
-"""
-DEAR USER, WELCOME TO THE TURING MACHINE!
-=====================================================================
-
-A Turing machine is a mathematical model of computation describing an
-abstract machine that manipulates symbols on a strip of tape according
-to a table of rules. Despite the model's simplicity, it is capable of
-implementing any computer algorithm.
-
-The machine operates on an infinite memory tape divided into discrete
-cells, each of which can hold a single symbol drawn from a finite set
-of symbols called the alphabet of the machine. It has a "head" that,
-at any point in the machine's operation, is positioned over one of
-these cells, and a "state" selected from a finite set of states.
-
-At each step of its operation, the head reads the symbol in its cell.
-Then, based on the symbol and the machine's own present state, the
-machine writes a symbol into the same cell, and moves the head one
-step to the left or the right, or halts the computation. The choice
-of which replacement symbol to write and which direction to move is
-based on a finite table that specifies what to do for each combination
-of the current state and the symbol that is read. 
-
-=====================================================================
-
-Rules are very simple. Machine can execute a few simple commands:
-    l - Move head to the left.
-    r - Move head to the right.
-    m - Stay at place.
-    w_- Write value of _ to the tape.
-    / - Write an subcommand.
-    q - Quit the machine.
-
----------------------------------------------------------------------
-
-Subcommands are kind of useful when you are creating something besides
-machine that can move 3 cells to right and write there 'Hello World!'.
-
-Subcommands are:
-    help - print this menu
-
-    states - print table of all states in machine
-        note: 0 state is exit state, don't try to overwrite it
-
-    save - save machine's tape and table of states to memory
-        note: there can be only 1 saved machine
-    
-    load - loads saved machine
-    
-    reset - reset to empty tape and empties table of states
-    
-    new - create new state, for details see above
-    
-    edit - edit states commands, index of state must be specified
-
-    run - run specified state. If no state is specified, simply
-          runs first state in table
-    
-    write - THIS IS NOT turing machine command, it is just used for
-            pre-writing on tape something, for further using
-
-=====================================================================
-
-States are saved in this format - RWMS, where each letter stands for:
-    R - if head reads value of R in current cell
-    W - then write W to current cell
-    M - move head on the tape (left, right, at-place)
-    S - change state to state with index S (For creating loops, state
-        can be changed to current)
---------------------------------------------------------------------
-
-As an example of machine usage, let's write a simple algorithm, for
-calculating sum of 2 numbers.
-
-Λ means the cell is empty. Let's write two numbers to tape, and '+'
-sign between them: 7+4
-This means we must write '+' sign, 8 ones on one side of it, and 5
-ones on the other side. We write n+1 ones, because 1 means 0.
-
-    ΛΛΛΛΛΛΛΛΛΛΛ11111111+11111ΛΛΛΛΛΛΛΛΛΛΛ
-               ᛏ
-
-There is an agreement, to start an finish run of the machine at the
-first left non-empty cell. So, let's start creating our states.
-For cell creation we must use subcommands, so we must type '/', and
-type command to the next line.
-
-    Machine$ /
-    new 11r1 +1r1 ΛΛm2
-
-This command creates a new state under the first number, and applies
-3 conditions to it. 11r1 means, that if machine sees an 1 on the 
-tape, it must leave it unchanged, by simply rewriting it to 1, than
-move one position to the left and go to state 1, which means stay in
-a loop. We need to add a few more states in the same way, and when
-done, use this command to see states table:
-
-    Machine$ /
-    states
-
-The output should be:
-    0 p
-    1 ['11r1', '+1r1', 'ΛΛm2']
-    2 ['ΛΛl2', '1Λl3']
-    3 ['11l3', 'ΛΛr0']
-
-After creating states, you may run the machine, and the result
-should be:
-    ΛΛΛΛΛΛΛΛΛΛΛ1111111111111ΛΛΛΛΛΛΛΛΛΛΛΛ
-               ᛏ
-
-====================================================================
-That's all. Thank you for using our Turing Machine.
-                                             
-                                             © Garik MKrtchyan 2022
-
-"""
-                    print(help_string)
                 elif subcommand[0] == 'states':
                     for i in range(len(M.states)):
                         print(i, M.states[i])
@@ -337,4 +362,25 @@ That's all. Thank you for using our Turing Machine.
         M.print_tape()
 
 if __name__ == '__main__':
-    execute()
+    while True:
+        command = input('$ ')
+        command = command.split(' ')
+        
+        if command[0] == 'readfile':
+            open_script('script.rwms')
+        # try:
+        #     M.open(subcommand[1])
+        # except IndexError:
+        #     print('Path to script file: ')
+        #     inp = input()
+        #     try:
+        #         M.open(inp)
+        #     except:
+        #         print('Try again.')
+        
+        elif command[0] == 'help':
+            print(HELP)
+
+        elif command[0] == 'execute':
+            execute()
+ 

@@ -15,12 +15,26 @@ https://colab.research.google.com/drive/1_-8lqQaUkW_NdKAfO6ogdZR4V8PJdNEe?usp=sh
 
 ------
 
+When machine core file is run, the '$' symbol is waiting for you to
+write command. Commands can be written in one line, or splited each
+space to a new line.
+
+```
+    readfile file_path - read script file and run it
+
+    help - print help menu
+
+    execute machine_name - machine_name is optional, if no name 
+                           specified, simply runs first machine
+```
+------
+
 Rules are very simple. Machine can execute a few simple commands:
 
 ```
     l - Move head to the left.
     r - Move head to the right.
-    m - Stay at place.
+    n - No move.
     w_- Write value of _ to the tape.
     / - Write an subcommand.
     q - Quit the machine.
@@ -58,7 +72,7 @@ Subcommands are:
 States are saved in this format - RWMS, where each letter stands for:
     R - if head reads value of R in current cell
     W - then write W to current cell
-    M - move head on the tape (left, right, at-place)
+    M - move head on the tape (left, right, no-move)
     S - change state to state with index S (For creating loops, state can be changed to current)
 
 As an example of machine usage, let's write a simple algorithm, for calculating sum of 2 numbers.
@@ -75,7 +89,7 @@ This means we must write '+' sign, 8 ones on one side of it, and 5 ones on the o
 There is an agreement, to start an finish run of the machine at the first left non-empty cell. So, let's start creating our states. For cell creation we must use subcommands, so we must type '/', and type command to the next line.
 
     Machine$ /
-    new 11r1 +1r1 ΛΛm2
+    new 11r1 +1r1 ΛΛn2
 
 This command creates a new state under the first number, and applies 3 conditions to it. 11r1 means, that if machine sees an 1 on the  tape, it must leave it unchanged, by simply rewriting it to 1, than move one position to the left and go to state 1, which means stay in a loop. We need to add a few more states in the same way, and when done, use this command to see states table:
 
@@ -86,7 +100,7 @@ The output should be:
 
 ```
    0 p
-   1 ['11r1', '+1r1', 'ΛΛm2']
+   1 ['11r1', '+1r1', 'ΛΛn2']
    2 ['ΛΛl2', '1Λl3']
    3 ['11l3', 'ΛΛr0']
 ```
