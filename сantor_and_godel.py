@@ -1,6 +1,6 @@
 from math import sqrt
 
-def cantor_pairing_function(x: int, y:int) -> int:
+def cantor_pairing_function(x: int, y: int) -> int:
     number = (x + y + 1) * (x + y)
     number //= 2
     number += y
