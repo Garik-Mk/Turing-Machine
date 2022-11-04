@@ -11,3 +11,17 @@ CREATE Machine1
     }
     ADDSTATE(11r4, 44m4);
 }
+
+CREATE Machine2
+{
+    ADDSTATES
+    {
+        1:
+            12r1, 11m2;
+        2:
+            22l2;
+    }
+}
+
+RUN(Machine1)
+RUN(Machine1+Machine2)

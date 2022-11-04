@@ -1,18 +1,20 @@
 
-def cantor_pair(vector: tuple) -> int:
+def cantor_pairing_function(vector: tuple) -> int:
+    x, y = vector
+    
+    number = (x + y + 1) * (x + y)
+    number //= 2
+    number += y
+    
+    return number
+
+
+def cantor_pairing_inverted(number: int) -> tuple:
     pass
 
-def invert_cantor_pair(p: int) -> tuple:
-    pass
+class Godel_numbering():
+    def __init__(self) -> None:
+        pass
 
-def godel_number_encode():
-    pass
 
-def godel_number_decode():
-    pass
-
-def description_number_encode():
-    pass
-
-def description_number_decode():
-    pass
+cantor_pairing_function((10, 20))
