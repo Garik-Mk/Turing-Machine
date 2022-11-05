@@ -1,4 +1,5 @@
 from machine_core import Machine
+from misc import open_script
 
 OPENED_MACHINES = {} # {'machine name': machine_object, ...
 
@@ -99,23 +100,6 @@ def execute(M: Machine = Machine()):
                 quit()
         
         M.print_tape()
-
-
-def open_script(file_path: str) -> None:
-    """Read script file and apply it's commands to machine."""
-    if not file_path.endswith('.rwms'):
-        return False
-    
-    f = open(file_path, 'r')
-    lines = f.readlines()
-    command_string = ''
-    
-    for i in range(len(lines)):
-        command_string += lines[i]
-    command_string = command_string.replace(' ', '').replace('\n', '')
-    
-    print(command_string)
-
 
 
 if __name__ == '__main__':

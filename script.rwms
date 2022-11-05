@@ -24,4 +24,4 @@ CREATE Machine2
 }
 
 RUN(Machine1)
-RUN(Machine1+Machine2)
+CONNECT(Machine1, Machine2)
