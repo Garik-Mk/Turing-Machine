@@ -26,6 +26,7 @@ space to a new line.
 
     execute machine_name - machine_name is optional, if no name 
                            specified, simply runs first machine
+    q - quit
 ```
 ------
 
