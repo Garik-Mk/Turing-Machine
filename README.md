@@ -124,7 +124,7 @@ TODO list
 
 That's all. Thank you for using our Turing Machine.                
 
-© Garik MKrtchyan 2022
+© Garik Mkrtchyan 2022
 
 Contacts:
     mail: garikmkrtychan277353@gmail.com
