@@ -116,7 +116,8 @@ should be:
 
 TODO list
  > Make program for reading files in RWMS format. [Still in progress :D]
-
+ > Minor changes in code, to match PEP8.
+ > Gyodel numeration implementation.
 That's all. Thank you for using our Turing Machine.                
 
 © Garik MKrtchyan 2022
