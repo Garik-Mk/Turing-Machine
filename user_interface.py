@@ -6,7 +6,7 @@ OPENED_MACHINES = {} # {'machine name': machine_object, ...
 def execute(M: Machine = Machine()):
     
     saved_tape, saved_pos, saved_L, saved_states = [], 0, 0, []
-    M.print_tape()
+    print(M)
 
     while True:
         
@@ -99,7 +99,7 @@ def execute(M: Machine = Machine()):
             elif low_command[i] == 'q':
                 quit()
         
-        M.print_tape()
+        print(M)
 
 
 if __name__ == '__main__':

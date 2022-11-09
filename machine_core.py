@@ -51,15 +51,6 @@ class Machine(object):
     def read(self) -> str:
         """Read value of current position."""
         return self.tape[self.position]
-
-    def print_tape(self) -> None:
-        """Print tape and machine position."""
-        print('')
-        print(' ', end='')
-        for i in self.tape:
-            print(i, end='')
-        print()
-        print(' ' * (self.position), 'ᛏ')
     
     def correct_command(self, command: str) -> bool:
         """Checks if command is correct RWMS format"""
@@ -114,5 +105,15 @@ class Machine(object):
                 except:
                     return False 
         return False
+
+    def __str__(self) -> str:
+        """Print tape and machine position."""
+        print('')
+        print(' ', end='')
+        for i in self.tape:
+            print(i, end='')
+        print()
+        print(' ' * (self.position), 'ᛏ')
+        return ''
 
 
