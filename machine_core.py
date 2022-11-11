@@ -2,28 +2,28 @@
 
 class Machine(object):
     def __init__(self) -> None:
-        self.__lenght__ = 10 
-        self.tape = ['Λ' for i in range(self.__lenght__ + 1)]
+        self.__lenght = 10 
+        self.tape = ['Λ' for i in range(self.__lenght + 1)]
         self.position = 0
         self.states = ['p']
         
     def R(self) -> None:
         """Move to right."""
-        if self.__lenght__ <= self.position:
-            for i in range(self.__lenght__):
+        if self.__lenght <= self.position:
+            for i in range(self.__lenght):
                 self.tape.append('Λ')
-            self.__lenght__ *= 2
+            self.__lenght *= 2
         self.position += 1
 
     def L(self) -> None:
         """Move to left."""
         if self.position == 0:
-            self.position = self.__lenght__ - 1
-            temp = ['Λ' for i in range(self.__lenght__)]
+            self.position = self.__lenght - 1
+            temp = ['Λ' for i in range(self.__lenght)]
             for i in self.tape:
                 temp.append(i)
             self.tape = temp
-            self.__lenght__ *= 2
+            self.__lenght *= 2
         else:
             self.position -= 1
         
@@ -108,12 +108,10 @@ class Machine(object):
 
     def __str__(self) -> str:
         """Print tape and machine position."""
-        print('')
-        print(' ', end='')
+        result = ' '
         for i in self.tape:
-            print(i, end='')
-        print()
-        print(' ' * (self.position), 'ᛏ')
-        return ''
-
+            result += i
+        result += '\n'
+        result += (' ' * (self.position) + ' ᛏ')
+        return result
 
