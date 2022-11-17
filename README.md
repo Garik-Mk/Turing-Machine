@@ -9,10 +9,6 @@ The machine operates on an infinite memory tape divided into discrete cells, eac
 
 At each step of its operation, the head reads the symbol in its cell. Then, based on the symbol and the machine's own present state, the machine writes a symbol into the same cell, and moves the head one step to the left or the right, or halts the computation. The choice of which replacement symbol to write and which direction to move is based on a finite table that specifies what to do for each combination of the current state and the symbol that is read. 
 
-Here you can see the machine in work and add comments and suggestions:
-
-https://colab.research.google.com/drive/1_-8lqQaUkW_NdKAfO6ogdZR4V8PJdNEe?usp=sharing
-
 ------
 
 When machine core file is run, the '$' symbol is waiting for you to
