@@ -10,7 +10,7 @@ def open_script(file_path: str) -> None:
     for i in range(len(lines)):
         command_string += lines[i]
     command_string = command_string.replace(' ', '').replace('\n', '')
-    print(command_string)
+    
+    return (command_string)
 
-open_script('./script.rwms')
     

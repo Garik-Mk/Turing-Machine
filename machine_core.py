@@ -1,4 +1,6 @@
 
+SAVED_TAPE, SAVED_POS, SAVED_L, SAVED_STATES = [], 0, 0, []
+
 
 class Machine(object):
     def __init__(self) -> None:
@@ -112,6 +114,92 @@ class Machine(object):
         for i in self.tape:
             result += i
         result += '\n'
-        result += (' ' * (self.position) + ' ᛏ')
+        result += (' ' * (self.position) + ' ᛏ\n')
         return result
+
+    def process_script(self, script: str) -> None:
+        pass
+
+    def process_command(self, command: str) -> None:
+        for i in range(len(command)):
+
+                if command[i] == 'r':
+                    self.R()
+                
+                elif command[i] == 'l':
+                    self.L()
+                
+                elif command[i] == 'w':
+                    try:
+                        self.write(command[i + 1])
+                        command[i + 1] = ' '
+                    except IndexError:
+                        w = input()
+                        if len(w) == 1:
+                            self.write(w)
+                
+                elif command[i] == '/':
+                    subcommand = input()
+                    subcommand = subcommand.split(' ')
+                    
+                    if subcommand[0] == 'new':
+                        try:
+                            self.add_state(*subcommand[1:])
+                        except IndexError:
+                            print('Please write commands for state.')
+                            inp = input()
+                            try:
+                                self.add_state(inp)
+                            except Exception:
+                                print('Try again.')
+                        except Exception:
+                            print("Something went wrong while creating state.")
+                    
+                    elif subcommand[0] == 'edit':
+                        try:
+                            self.edit_state(subcommand[1])
+                        except IndexError:
+                            print('States id must be specified')
+                        # except:
+                        #     print('Something went wrong during editing')
+
+                    elif subcommand[0] == 'run':
+                        try:
+                            self.run_state(int(subcommand[1]))
+                        except IndexError:
+                            self.run_state(0)
+                        except Exception:
+                            print("Something went wrong with state index.")
+                    
+                    elif subcommand[0] == 'write':
+                        try:
+                            self.__write_for_tests__(subcommand[1:])
+                        except IndexError:
+                            print('Write to tape: ')
+                            inp = input()
+                            try:
+                                self.__write_for_tests__(inp)
+                            except Exception:
+                                print('Try again.')
+                    
+                    elif subcommand[0] == 'save':
+                        SAVED_L = self.__lenght__
+                        SAVED_TAPE[:] = self.tape[:]
+                        SAVED_STATES = self.states
+                        SAVED_POS = self.position
+                    
+                    elif subcommand[0] == 'load':
+                        self.__lenght__ = SAVED_L
+                        self.tape[:] = SAVED_TAPE[:]
+                        self.states = SAVED_STATES
+                        self.position = SAVED_POS
+                    
+                    elif subcommand[0] == 'states':
+                        for i in range(len(self.states)):
+                            print(i, self.states[i])
+                    
+                    else:
+                        print('Wrong command.')
+
+
 
