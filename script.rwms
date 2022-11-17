@@ -1,4 +1,4 @@
-CREATE Machine1
+Machine1
 {
     ADDSTATES
     {
@@ -12,7 +12,7 @@ CREATE Machine1
     ADDSTATE(11r4, 44m4);
 }
 
-CREATE Machine2
+Machine2
 {
     ADDSTATES
     {

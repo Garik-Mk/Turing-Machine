@@ -1,4 +1,5 @@
 from math import sqrt
+from machine_core import Machine
 
 def cantor_pairing_function(x: int, y: int) -> int:
     number = (x + y + 1) * (x + y)
@@ -23,5 +24,13 @@ def cantor_pairing_inverted(number: int) -> tuple:
 
 
 class Godel_numbering():
-    def __init__(self) -> None:
+    def __init__(self, M: Machine) -> None:
+        states = M.states
+        alphabet = []
+        
+    
+    def enum():
+        pass
+
+    def denum():
         pass
