@@ -11,6 +11,7 @@ def open_script(file_path: str) -> None:
         command_string += lines[i]
     command_string = command_string.replace(' ', '').replace('\n', '')
     
+    
     return (command_string)
 
     
