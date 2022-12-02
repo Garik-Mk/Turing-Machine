@@ -1,4 +1,4 @@
-def open_script(file_path: str) -> None:
+def open_script(file_path: str) -> None: #work in progress
     """Read script file and apply it's commands to machine."""
     if not file_path.endswith('.rwms'):
         return False
@@ -11,6 +11,7 @@ def open_script(file_path: str) -> None:
         command_string += lines[i]
     command_string = command_string.replace(' ', '').replace('\n', '')
     
+    ...
     
     return (command_string)
 

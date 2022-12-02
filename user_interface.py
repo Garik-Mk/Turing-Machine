@@ -1,3 +1,4 @@
+#Will be reworked, GUI will be added soon
 from machine_core import Machine
 from misc import open_script
 

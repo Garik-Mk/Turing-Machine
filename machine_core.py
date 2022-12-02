@@ -1,11 +1,11 @@
-
+#THIS FILE WILL BE REMOVED WHEN GUI WILL BE ADDED
 SAVED_TAPE, SAVED_POS, SAVED_L, SAVED_STATES = [], 0, 0, []
 
 
 class Machine(object):
     def __init__(self) -> None:
         self.__lenght = 10 
-        self.tape = ['Λ' for i in range(self.__lenght + 1)]
+        self.tape = ['Λ' for i in range(self.__lenght + 1)] 
         self.position = 0
         self.states = ['p']
         
@@ -98,7 +98,7 @@ class Machine(object):
                     self.R()
                 elif command[2].lower() == 'l':
                     self.L()
-                self.print_tape()
+                self.print_tape() #will be reworked
                 try:
                     if command[3:] == '0':
                         return False
@@ -118,8 +118,16 @@ class Machine(object):
         return result
 
     def process_script(self, script: str) -> None:
-        pass
+        ...
 
+    def print_tape(self): # temproray
+        result = ' '
+        for i in self.tape:
+            result += i
+        result += '\n'
+        result += (' ' * (self.position) + ' ᛏ\n')
+        print(result)
+    
     def process_command(self, command: str) -> None:
         for i in range(len(command)):
 
@@ -167,7 +175,7 @@ class Machine(object):
                         try:
                             self.run_state(int(subcommand[1]))
                         except IndexError:
-                            self.run_state(0)
+                            self.run_state(1)
                         except Exception:
                             print("Something went wrong with state index.")
                     
@@ -200,6 +208,4 @@ class Machine(object):
                     
                     else:
                         print('Wrong command.')
-
-
 
